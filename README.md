@@ -14,7 +14,7 @@ Choice of 3D axis to extract and orientation can be user defined by the optional
 - inputBModeVolume path to the 3D bmode volume
 - inputPowerDopplerVolume path to the 3D PD volume
 - inputSegVolume path to the 3D binary segmentation volume
-- inputDTVolume path to the 3D Signed Euclidean Distance Transform volume
+- inputDTVolume path to the 3D Signed Euclidean Distance Transform volume (must be in double precision)
 - dist floating point argument of distance from the UPI to measure
 - outputDir output directory to store volumes and meshes for analysis
 - axis optional integer parameter of axis (0,1,2) in which extraction should occur
