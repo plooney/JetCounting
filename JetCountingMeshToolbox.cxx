@@ -680,9 +680,9 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
   vtkToITKConverter_BMode->SetInput(VolumeData);
   vtkToITKConverter_BMode->Update();
 
-  InputVTKType::Pointer vtkToITKConv_Doppler = InputVTKType::New();
-  vtkToITKConv_Doppler->SetInput(DopplerData);
-  vtkToITKConv_Doppler->Update();
+  //InputVTKType::Pointer vtkToITKConv_Doppler = InputVTKType::New();
+  //vtkToITKConv_Doppler->SetInput(DopplerData);
+  //vtkToITKConv_Doppler->Update();
 
   InputFloatVTKType::Pointer vtkToITKConv_EDT = InputFloatVTKType::New();
   vtkToITKConv_EDT->SetInput(EDTData);
@@ -692,6 +692,7 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
   ImageMomentsCalculatorType::Pointer calculatorFilter = ImageMomentsCalculatorType::New();
   calculatorFilter->SetImage(vtkToITKConverter->GetOutput());
   calculatorFilter->Compute();
+  cout << "Test3" << "\n";
   
   //print out principal axes,
   std::cout <<	"Principal Axes "<< std::endl;
@@ -739,12 +740,12 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
 	  transform->Rotate3D(angles[0],axes[0],false);
 	  //transform->Rotate3D(angles[1],axes[1],false);
 	  //transform->Rotate3D(angles[2],axes[2],false);
-	  if (interface_axis == 3){
-	   Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),axes[0]);
-	  }
-	  else{
-	   Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),interface_axis);
-	  }
+	  //if (interface_axis == 3){
+	  // Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),axes[0]);
+	  //}
+	  //else{
+	  // Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),interface_axis);
+	  //}
   }
   else{
 		for(int a_x = 0; a_x <3; a_x++){
@@ -754,12 +755,12 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
 				std::cout << "Angle of axis = "  << (angles[a_x]*180.0)/3.14 << std::endl;
 				transform->Rotate3D(angles[a_x],axes[a_x],false);
 
-				if (interface_axis == 3){
-					Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),axes[a_x]);
-				}
-				else{
-					Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),interface_axis);
-				}
+				//if (interface_axis == 3){
+				//	Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),axes[a_x]);
+				//}
+				//else{
+				//	Orientation = BasalOrientation(vtkToITKConv_Doppler->GetOutput(),vtkToITKConverter->GetOutput(),interface_axis);
+				//}
 			}
 		}
   }
@@ -815,13 +816,13 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
   resampleBModeFilter->Update();
 
 
-  ResampleFilterType::Pointer resampleDopplerFilter = ResampleFilterType::New();
-  resampleDopplerFilter->SetTransform(transform);
-  resampleDopplerFilter->SetInput(vtkToITKConv_Doppler->GetOutput());
-  resampleDopplerFilter->SetSize ( size );
-  resampleDopplerFilter->SetOutputSpacing(output_spacings);
-  resampleDopplerFilter->SetOutputOrigin(origin);
-  resampleDopplerFilter->Update();
+  //ResampleFilterType::Pointer resampleDopplerFilter = ResampleFilterType::New();
+  //resampleDopplerFilter->SetTransform(transform);
+  //resampleDopplerFilter->SetInput(vtkToITKConv_Doppler->GetOutput());
+  //resampleDopplerFilter->SetSize ( size );
+  //resampleDopplerFilter->SetOutputSpacing(output_spacings);
+  //resampleDopplerFilter->SetOutputOrigin(origin);
+  //resampleDopplerFilter->Update();
 
   FloatResampleFilterType::Pointer resampleEDTFilter = FloatResampleFilterType::New();
   resampleEDTFilter->SetTransform(transform);
@@ -836,8 +837,8 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
   OutputVTKType::Pointer rotSeg_toVTK = OutputVTKType::New();
   OutputVTKType::Pointer rotBMode_toVTK = OutputVTKType::New();
 
-  rotPD_toVTK->SetInput(resampleDopplerFilter->GetOutput());
-  rotPD_toVTK->Update();
+  //rotPD_toVTK->SetInput(resampleDopplerFilter->GetOutput());
+  //rotPD_toVTK->Update();
   
   rotEDT_toVTK->SetInput(resampleEDTFilter->GetOutput());
   rotEDT_toVTK->Update();
@@ -849,7 +850,7 @@ void JetCountingMeshToolbox::RotatePlacentaBasedOnMinorAxis(int axis,int interfa
   rotBMode_toVTK->Update();
 
   
-  Rot_DopplerData->DeepCopy(rotPD_toVTK->GetOutput());
+  //Rot_DopplerData->DeepCopy(rotPD_toVTK->GetOutput());
   Rot_SegData->DeepCopy(rotSeg_toVTK->GetOutput());
   Rot_EDTData->DeepCopy(rotEDT_toVTK->GetOutput());
   Rot_BModeData->DeepCopy(rotBMode_toVTK->GetOutput());

@@ -79,8 +79,8 @@ int main(int argc, char* argv[])
 	reader->SetFileName(argv[1]);
 	reader->Update();
 
-	pdreader->SetFileName(argv[2]);
-	pdreader->Update();
+        //pdreader->SetFileName(argv[2]);
+	//pdreader->Update();
 
 	segreader->SetFileName(argv[3]);
 	segreader->Update();
@@ -97,19 +97,22 @@ int main(int argc, char* argv[])
 	std::string full_mesh_path = out_path;
 	std::string bmode_path = out_path;
 
-	pd_path.append("\\rot_pd.mha");
-	edt_path.append("\\rot_edt.mha");
-	seg_path.append("\\rot_seg.mha");
-	bmode_path.append("\\rot_bmode.mha");
-	mesh_path.append("\\mesh.vtk");
-	mesh_path1.append("\\mesh_otherside.vtk");
-	full_mesh_path.append("\\mesh_nocut.vtk");
+	pd_path.append("/rot_pd.mha");
+	edt_path.append("/rot_edt.mha");
+	seg_path.append("/rot_seg.mha");
+	bmode_path.append("/rot_bmode.mha");
+	mesh_path.append("/mesh.vtk");
+	mesh_path1.append("/mesh_otherside.vtk");
+	full_mesh_path.append("/mesh_nocut.vtk");
+
 
 	JetCountingMeshToolbox *toolbox = new JetCountingMeshToolbox();
 	
 	toolbox->VolumeData = reader->GetOutput();
+	cout << "Test1" << "\n";
 	toolbox->SegmentationData = segreader->GetOutput();
-	toolbox->DopplerData = pdreader->GetOutput();
+	cout << "Test2" << "\n";
+	//toolbox->DopplerData = pdreader->GetOutput();
 	toolbox->EDTData = dtreader->GetOutput();
 
 	if ((argc == 8) && (atoi(argv[7]) > 2) && (atoi(argv[7])<0)){				
@@ -128,8 +131,9 @@ int main(int argc, char* argv[])
 	if (argc == 7){
 		toolbox->RotatePlacentaBasedOnMinorAxis();
 	}
+	cout << "Test3" << "\n";
 	std::cout << pd_path<< "\n";
-	toolbox->WriteImage(toolbox->Rot_DopplerData,pd_path);
+	//toolbox->WriteImage(toolbox->Rot_DopplerData,pd_path);
 	toolbox->WriteImage(toolbox->Rot_EDTData,edt_path);
 	toolbox->WriteImage(toolbox->Rot_SegData,seg_path);
 	toolbox->WriteImage(toolbox->Rot_BModeData,bmode_path);
@@ -161,9 +165,9 @@ int main(int argc, char* argv[])
 		spurtPD_other = toolbox->ExtractInterface(spurtPD_other,toolbox->Axis,other_Ori);
 		spurtPD = toolbox->ExtractInterface(spurtPD,toolbox->Axis,toolbox->Orientation);
 	}
-	spurtPD = toolbox->PaintMesh(spurtPD,toolbox->Rot_DopplerData);
-	spurtPD_other = toolbox->PaintMesh(spurtPD_other,toolbox->Rot_DopplerData);		
-	fullmesh = toolbox->PaintMesh(fullmesh,toolbox->Rot_DopplerData);
+	//spurtPD = toolbox->PaintMesh(spurtPD,toolbox->Rot_DopplerData);
+	//spurtPD_other = toolbox->PaintMesh(spurtPD_other,toolbox->Rot_DopplerData);		
+	//fullmesh = toolbox->PaintMesh(fullmesh,toolbox->Rot_DopplerData);
 
 	toolbox->WriteMesh(toolbox->RotateMeshBack(spurtPD,toolbox->transform),mesh_path);
 	toolbox->WriteMesh(toolbox->RotateMeshBack(spurtPD_other,toolbox->transform), mesh_path1);
